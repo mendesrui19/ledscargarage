@@ -216,16 +216,7 @@
                 preload="metadata"
                 aria-hidden="true"
               ></video>
-              <img
-                class="vehicle-viewer__frame-lock"
-                src="/images/showcase/traseira-bridge.jpg"
-                srcset="/images/showcase/traseira-bridge.jpg 1920w, /images/showcase/traseira-bridge@2x.jpg 3840w"
-                sizes="100vw"
-                alt=""
-                loading="eager"
-                decoding="async"
-                aria-hidden="true"
-              />
+              
               <div class="vehicle-viewer__hint" role="status" aria-live="polite">
                 <span class="vehicle-viewer__hint-icon" aria-hidden="true">↔</span>
                 <span>Desliza para explorar as vistas</span>
@@ -335,6 +326,15 @@
             Ver catálogo<br /><span class="section-title__accent">completo</span>
           </h3>
           <div class="catalog-preview__carousel" aria-label="Destaques do catálogo">
+            <div class="catalog-preview__statusbar" aria-hidden="true">
+              <span class="catalog-preview__status-left">LEDSCAR OS</span>
+              <span class="catalog-preview__status-right">
+                <span class="catalog-preview__status-dot"></span>
+                <span class="catalog-preview__status-dot"></span>
+                <span class="catalog-preview__status-bars"></span>
+                <span class="catalog-preview__status-clock">10:00</span>
+              </span>
+            </div>
             <div class="catalog-preview__viewport">
               <div class="catalog-preview__track">
             <a href="catalogo.html#golf-mk7-gti" class="catalog-card magnetic" data-magnetic>
@@ -362,6 +362,24 @@
               <span class="catalog-card__name">Audi Q4 e-tron</span>
             </a>
             </div>
+            </div>
+            <div class="catalog-preview__climate" aria-hidden="true">
+              <span class="catalog-preview__climate-side">
+                <span class="catalog-preview__climate-btn">−</span>
+                <span class="catalog-preview__climate-temp">21.5°</span>
+                <span class="catalog-preview__climate-btn">+</span>
+              </span>
+              <span class="catalog-preview__climate-center">
+                <span class="catalog-preview__climate-icon"></span>
+                <span class="catalog-preview__climate-icon"></span>
+                <span class="catalog-preview__climate-icon catalog-preview__climate-icon--home"></span>
+                <span class="catalog-preview__climate-icon"></span>
+              </span>
+              <span class="catalog-preview__climate-side">
+                <span class="catalog-preview__climate-btn">−</span>
+                <span class="catalog-preview__climate-temp">21.5°</span>
+                <span class="catalog-preview__climate-btn">+</span>
+              </span>
             </div>
           </div>
           <a href="catalogo.html" class="btn btn--primary magnetic catalog-preview__cta" data-magnetic data-cursor="cta">

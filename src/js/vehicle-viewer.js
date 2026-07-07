@@ -56,7 +56,6 @@ export function initVehicleViewer(reducedMotion) {
   const navNext = section.querySelector('.vehicle-viewer__nav-btn--next');
   const hint = section.querySelector('.vehicle-viewer__hint');
   const transitionVideo = section.querySelector('.vehicle-viewer__transition');
-  const frameLock = section.querySelector('.vehicle-viewer__frame-lock');
 
   if (!img || !tabs.length || !thumbsWrap) return;
 
@@ -81,15 +80,17 @@ export function initVehicleViewer(reducedMotion) {
   let demoTimer = 0;
   let bridgeTimer = 0;
   let bridgeFadeTimer = 0;
-  let frameLockTimer = 0;
-  let toneTimer = 0;
   let postBridgeTimerA = 0;
   let postBridgeTimerB = 0;
   const hasBridge = Boolean(transitionVideo && !reducedMotion);
   let bridgeDone = !hasBridge;
   const BRIDGE_TARGET_TIME = 6.0;
-  const BRIDGE_FADE_MS = 760;
-  const BRIDGE_HOLD_MS = 120;
+  const CONTROLS_REVEAL_TIME = 5.8;
+  const BRIDGE_FADE_MS = 780;
+  const BRIDGE_HOLD_MS = 130;
+  const BRIDGE_ALIGN_SCALE = 1.11;
+  const BRIDGE_ALIGN_X = 2.8;
+  const BRIDGE_ALIGN_Y = 0.8;
 
   if (hasBridge) section.classList.add('has-bridge');
 
@@ -120,7 +121,7 @@ export function initVehicleViewer(reducedMotion) {
     scrollThumbIntoView(index);
   };
 
-  const setImage = (nextIndex) => {
+  const setImage = (nextIndex, { soft = false } = {}) => {
     const slide = SLIDES[nextIndex];
     if (!slide || animating || nextIndex === index) return;
 
@@ -132,19 +133,29 @@ export function initVehicleViewer(reducedMotion) {
     }
 
     animating = true;
+    const fadeOut = soft ? 0.34 : 0.18;
+    const fadeIn = soft ? 0.56 : 0.28;
+    const easeOut = soft ? 'power1.inOut' : 'power2.in';
+    const easeIn = soft ? 'power1.out' : 'power2.out';
+
     gsap.to(img, {
       opacity: 0,
-      duration: 0.18,
-      ease: 'power2.in',
+      scale: soft ? 1.012 : 1,
+      duration: fadeOut,
+      ease: easeOut,
       force3D: false,
       onComplete: () => {
         applySlideImage(img, slide);
         index = nextIndex;
         updateUI();
-        gsap.to(img, {
+        gsap.fromTo(img, {
+          opacity: 0,
+          scale: soft ? 1.018 : 1,
+        }, {
           opacity: 1,
-          duration: 0.28,
-          ease: 'power2.out',
+          scale: 1,
+          duration: fadeIn,
+          ease: easeIn,
           force3D: false,
           onComplete: () => { animating = false; },
         });
@@ -202,21 +213,21 @@ export function initVehicleViewer(reducedMotion) {
   }, { threshold: 0.6 });
   io.observe(section);
 
+  const revealControls = () => {
+    section.classList.add('is-controls-visible');
+  };
+
   const finishBridge = () => {
     if (bridgeDone) return;
     bridgeDone = true;
     clearTimeout(bridgeTimer);
     clearTimeout(bridgeFadeTimer);
-    clearTimeout(frameLockTimer);
-    clearTimeout(toneTimer);
     clearPostBridgeSequence();
     section.classList.add('is-bridge-done');
     section.classList.remove('is-bridge-fading');
-    section.classList.remove('is-frame-lock-active');
-    section.classList.remove('is-frame-lock-fading');
-    section.classList.remove('is-tone-match');
-    section.classList.remove('is-tone-settle');
     section.classList.remove('has-bridge');
+    gsap.set(img, { scale: 1, xPercent: 0, yPercent: 0, transformOrigin: '50% 50%' });
+    revealControls();
     if (transitionVideo) {
       transitionVideo.pause();
       transitionVideo.currentTime = 0;
@@ -225,8 +236,8 @@ export function initVehicleViewer(reducedMotion) {
     if (!userInteracted) {
       const firstInterior = Math.max(firstSlideForTab('interior'), 0);
       const firstExterior = Math.max(firstSlideForTab('frente'), 0);
-      postBridgeTimerA = window.setTimeout(() => setImage(firstInterior), 750);
-      postBridgeTimerB = window.setTimeout(() => setImage(firstExterior), 1900);
+      postBridgeTimerA = window.setTimeout(() => setImage(firstInterior, { soft: true }), 950);
+      postBridgeTimerB = window.setTimeout(() => setImage(firstExterior, { soft: true }), 2500);
     }
   };
 
@@ -235,25 +246,32 @@ export function initVehicleViewer(reducedMotion) {
       if (bridgeDone || section.classList.contains('is-bridge-fading')) return;
       transitionVideo.pause();
       applySlideImage(img, SLIDES[initialIndex]);
-      section.classList.add('is-tone-match');
-      section.classList.remove('is-tone-settle');
-      if (frameLock) {
-        section.classList.add('is-frame-lock-active');
-        section.classList.remove('is-frame-lock-fading');
-      }
+      gsap.set(img, {
+        scale: BRIDGE_ALIGN_SCALE,
+        xPercent: BRIDGE_ALIGN_X,
+        yPercent: BRIDGE_ALIGN_Y,
+        transformOrigin: '50% 50%',
+      });
+      revealControls();
       bridgeFadeTimer = window.setTimeout(() => {
         section.classList.add('is-bridge-fading');
-        if (frameLock) section.classList.add('is-frame-lock-fading');
-        toneTimer = window.setTimeout(() => {
-          section.classList.add('is-tone-settle');
-          section.classList.remove('is-tone-match');
-        }, 140);
+        gsap.to(img, {
+          scale: 1,
+          xPercent: 0,
+          yPercent: 0,
+          duration: (BRIDGE_FADE_MS + 220) / 1000,
+          ease: 'power2.out',
+          force3D: false,
+        });
       }, BRIDGE_HOLD_MS);
-      frameLockTimer = window.setTimeout(finishBridge, BRIDGE_HOLD_MS + BRIDGE_FADE_MS + 40);
+      window.setTimeout(finishBridge, BRIDGE_HOLD_MS + BRIDGE_FADE_MS + 40);
     };
 
     transitionVideo.addEventListener('timeupdate', () => {
       if (bridgeDone) return;
+      if (transitionVideo.currentTime >= CONTROLS_REVEAL_TIME) {
+        revealControls();
+      }
       if (transitionVideo.currentTime >= BRIDGE_TARGET_TIME) {
         beginFadeFromMatchedFrame();
       }

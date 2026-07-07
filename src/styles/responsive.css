@@ -279,7 +279,9 @@
     font-size: 0.58rem;
     letter-spacing: 0.06em;
     padding: 0.34rem 0.58rem;
-    max-width: calc(100% - 1rem);
+    max-width: min(92vw, 520px);
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .vehicle-viewer__hero::before {
@@ -493,6 +495,8 @@
     width: calc(100% + var(--page-pad) * 2);
     max-width: calc(100% + var(--page-pad) * 2);
     min-width: 0;
+    padding: 0.56rem 0.56rem 0.72rem;
+    border-radius: 0.92rem;
   }
   .catalog-preview__viewport--swipe {
     scroll-padding-inline: calc(var(--page-pad) + 10vw);
@@ -510,17 +514,18 @@
   .catalog-card,
   .catalog-preview__viewport--swipe .catalog-card {
     flex: 0 0 clamp(160px, 58vw, 210px);
-    border-radius: calc(var(--r-lg) * 0.85);
+    border-radius: 0.6rem;
   }
   .catalog-card img {
     aspect-ratio: 4 / 3;
-    max-height: min(34vw, 148px);
+    max-height: min(34vw, 146px);
     object-fit: cover;
+    width: 100%;
   }
   .catalog-card__name {
-    font-size: 0.7rem;
-    padding: 0.5rem 0.65rem;
-    letter-spacing: 0.05em;
+    font-size: 0.62rem;
+    padding: 0.46rem 0.56rem 0.5rem;
+    letter-spacing: 0.07em;
   }
   .catalog-preview__cta {
     width: min(100% - var(--page-pad) * 2, 260px);
