@@ -92,22 +92,6 @@ function initProject(section, reducedMotion) {
     const getScroll = () => Math.max(track.scrollWidth - wrap.offsetWidth + 80, 0);
     const scrollLen = () => getScroll() + window.innerHeight * 0.28;
 
-    const setPinLayout = (active) => {
-      section.classList.toggle('is-pin-active', active);
-      if (active) {
-        layout.style.minHeight = `${window.innerHeight - getNavOffset()}px`;
-      } else {
-        layout.style.removeProperty('min-height');
-      }
-    };
-
-    const onResize = () => {
-      if (section.classList.contains('is-pin-active')) {
-        layout.style.minHeight = `${window.innerHeight - getNavOffset()}px`;
-      }
-    };
-    window.addEventListener('resize', onResize, { passive: true });
-
     const tween = gsap.to(track, {
       x: () => -getScroll(),
       ease: 'none',
@@ -119,11 +103,7 @@ function initProject(section, reducedMotion) {
         pinSpacing: true,
         scrub: 0.6,
         invalidateOnRefresh: true,
-        anticipatePin: 1,
-        onEnter: () => setPinLayout(true),
-        onLeave: () => setPinLayout(false),
-        onEnterBack: () => setPinLayout(true),
-        onLeaveBack: () => setPinLayout(false),
+        anticipatePin: 0,
         onUpdate: (self) => {
           if (progress) progress.style.width = `${self.progress * 100}%`;
           const active = Math.round(self.progress * Math.max(photos.length - 1, 0));
@@ -135,10 +115,8 @@ function initProject(section, reducedMotion) {
     const unbindReveal = bindReveal(section, heading, false);
 
     return () => {
-      window.removeEventListener('resize', onResize);
       tween.scrollTrigger?.kill();
       tween.kill();
-      setPinLayout(false);
       gsap.set(track, { x: 0, clearProps: 'transform' });
       unbindReveal();
     };

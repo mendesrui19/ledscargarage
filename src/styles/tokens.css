@@ -1304,17 +1304,6 @@ body.is-menu-open { overflow: hidden; }
   .project-showcase__track {
     align-items: flex-start;
   }
-  .project-showcase.is-pin-active .project-showcase__layout {
-    min-height: calc(100svh - var(--nav-h)) !important;
-    min-height: calc(100dvh - var(--nav-h)) !important;
-    align-items: center;
-    align-content: center;
-    box-sizing: border-box;
-  }
-  .project-showcase.is-pin-active .project-showcase__intro,
-  .project-showcase.is-pin-active .project-showcase__gallery-wrap {
-    align-self: center;
-  }
 }
 .project-showcase__intro {
   position: relative;
@@ -1666,19 +1655,9 @@ body.is-menu-open { overflow: hidden; }
   align-items: start;
   gap: clamp(1.25rem, 3vw, 2.5rem);
 }
-.catalog-hub > .project-showcase:not(.is-pin-active) .project-showcase__intro,
-.catalog-hub > .project-showcase:not(.is-pin-active) .project-showcase__gallery-wrap {
+.catalog-hub > .project-showcase .project-showcase__intro,
+.catalog-hub > .project-showcase .project-showcase__gallery-wrap {
   align-self: start;
-}
-.catalog-hub > .project-showcase.is-pin-active .project-showcase__layout {
-  min-height: calc(100svh - var(--nav-h)) !important;
-  min-height: calc(100dvh - var(--nav-h)) !important;
-  align-items: center;
-  align-content: center;
-}
-.catalog-hub > .project-showcase.is-pin-active .project-showcase__intro,
-.catalog-hub > .project-showcase.is-pin-active .project-showcase__gallery-wrap {
-  align-self: center;
 }
 .catalog-preview {
   padding: clamp(2rem, 5vh, 3rem) 0 clamp(2rem, 4vh, 2.5rem);
@@ -1820,19 +1799,13 @@ body.is-menu-open { overflow: hidden; }
 .catalog-page-projects .project-showcase__layout {
   min-height: auto;
 }
-.catalog-page-projects .project-showcase:not(.is-pin-active) .project-showcase__intro,
-.catalog-page-projects .project-showcase:not(.is-pin-active) .project-showcase__gallery-wrap {
+.catalog-page-projects .project-showcase__intro {
+  position: static;
+  top: auto;
+}
+.catalog-page-projects .project-showcase__intro,
+.catalog-page-projects .project-showcase__gallery-wrap {
   align-self: start;
-}
-.catalog-page-projects .project-showcase.is-pin-active .project-showcase__layout {
-  min-height: calc(100svh - var(--nav-h)) !important;
-  min-height: calc(100dvh - var(--nav-h)) !important;
-  align-items: center;
-  align-content: center;
-}
-.catalog-page-projects .project-showcase.is-pin-active .project-showcase__intro,
-.catalog-page-projects .project-showcase.is-pin-active .project-showcase__gallery-wrap {
-  align-self: center;
 }
 .nav__link--active { color: var(--bronze-bright); }
 
