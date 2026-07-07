@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="LEDSCAR.GARAGE — Personalização de iluminação interior e exterior e alterações estéticas auto em Amarante, Porto." />
+    <meta name="robots" content="index, follow, noarchive, noimageindex" />
+    <meta name="theme-color" content="#0a0a0c" />
+    <title>LEDSCAR.GARAGE — Iluminação & Estética Auto · Amarante</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/videos/loader.mp4" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/images/poster-loader.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/images/poster-hero-scroll.jpg" as="image" />
+    <link rel="preload" href="/videos/hero-scroll.mp4" as="video" type="video/mp4" />
+    <link rel="preload" href="/images/showcase/frente.webp" as="image" type="image/webp" imagesrcset="/images/showcase/frente.webp 1920w, /images/showcase/frente@2x.webp 3840w" imagesizes="100vw" />
+    <link rel="preload" href="/images/logo.jpg" as="image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="ambient-glow" class="ambient-glow" aria-hidden="true"></div>
+    <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+    <canvas id="ambient-canvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+    <div id="preloader" class="preloader" aria-live="polite" aria-busy="true">
+      <div class="preloader__panel">
+        <img src="/images/logo.jpg" alt="LEDSCAR.GARAGE" class="preloader__logo" width="104" height="104" />
+
+        <div class="preloader__frame">
+          <video
+            class="preloader__video"
+            src="/videos/loader.mp4"
+            poster="/images/poster-loader.jpg"
+            muted
+            playsinline
+            preload="auto"
+          ></video>
+        </div>
+
+        <p class="preloader__status" id="preloader-status">Starting Engine<span class="preloader__dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p>
+
+        <div class="preloader__progress" aria-hidden="true">
+          <div class="preloader__progress-fill"></div>
+        </div>
+        <span class="preloader__pct"><span id="preloader-count">0</span>%</span>
+      </div>
+    </div>
+
+  <div class="progress-hud" aria-hidden="true"><div class="progress-hud__fill"></div></div>
+
+    <header class="nav" id="nav">
+      <a href="#hero" class="nav__brand magnetic" data-magnetic>
+        <img src="/images/logo.jpg" alt="LEDSCAR.GARAGE" width="44" height="44" />
+        <span class="nav__brand-text">LEDSCAR<span class="nav__dot">.</span>GARAGE</span>
+      </a>
+      <nav class="nav__links">
+        <a href="#chapter-workshop" class="nav__link magnetic" data-magnetic>Serviços</a>
+        <a href="#catalogo" class="nav__link magnetic" data-magnetic>Trabalhos</a>
+        <a href="catalogo.html" class="nav__link magnetic" data-magnetic>Catálogo</a>
+        <a href="#contacto" class="nav__link magnetic" data-magnetic>Contacto</a>
+      </nav>
+      <a href="#contacto" class="nav__cta magnetic" data-magnetic data-cursor="cta">Orçamento</a>
+      <button class="nav__burger" id="nav-burger" aria-label="Menu"><span></span><span></span></button>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <button type="button" class="mobile-menu__close" id="mobile-menu-close" aria-label="Fechar menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+      </button>
+      <nav class="mobile-menu__nav" aria-label="Menu principal">
+        <a href="#chapter-workshop">Serviços</a>
+        <a href="#catalogo">Trabalhos</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <a href="#contacto" class="btn btn--primary mobile-menu__cta">Orçamento Grátis</a>
+    </div>
+
+    <main id="main">
+      <!-- ═══ HERO — cinematic scroll (vídeo scrub + serviços + marcas) ═══ -->
+      <section class="hero-cine" id="hero" data-chapter="hero">
+        <div class="hero-cine__pin">
+          <div class="hero-cine__media">
+            <video
+              class="hero-cine__video"
+              src="/videos/hero-scroll.mp4"
+              poster="/images/poster-hero-scroll.jpg"
+              muted
+              playsinline
+              preload="auto"
+            ></video>
+            <div class="hero-cine__vignette" aria-hidden="true"></div>
+            <div class="hero-cine__grain" aria-hidden="true"></div>
+          </div>
+
+          <!-- Fase 1 — intro -->
+          <div class="hero-cine__stage hero-cine__stage--intro" data-stage="intro">
+            <span class="eyebrow eyebrow--gold hero-cine__eyebrow">Amarante · Porto</span>
+            <h1 class="hero-cine__title">
+              <span class="hero-cine__title-line">LEDSCAR</span>
+              <span class="hero-cine__title-line hero-cine__title-accent">.GARAGE</span>
+            </h1>
+            <p class="hero-cine__tagline">Iluminação &amp; estética auto de nível premium.</p>
+            <div class="hero-cine__intro-stats" aria-label="Números">
+              <div class="hero-cine__intro-stat">
+                <span class="hero-cine__intro-stat-value"><span class="hero-cine__intro-stat-num" data-count="100">0</span><span class="hero-cine__intro-stat-suffix">+</span></span>
+                <span class="hero-cine__intro-stat-label">Instalações</span>
+              </div>
+              <div class="hero-cine__intro-stat">
+                <span class="hero-cine__intro-stat-value"><span class="hero-cine__intro-stat-num" data-count="98">0</span><span class="hero-cine__intro-stat-suffix">%</span></span>
+                <span class="hero-cine__intro-stat-label">Satisfação</span>
+              </div>
+              <div class="hero-cine__intro-stat">
+                <span class="hero-cine__intro-stat-value"><span class="hero-cine__intro-stat-num" data-count="24">0</span><span class="hero-cine__intro-stat-suffix">h</span></span>
+                <span class="hero-cine__intro-stat-label">Resposta</span>
+              </div>
+              <div class="hero-cine__intro-stat">
+                <span class="hero-cine__intro-stat-value"><span class="hero-cine__intro-stat-num" data-count="2">0</span><span class="hero-cine__intro-stat-suffix">yr</span></span>
+                <span class="hero-cine__intro-stat-label">Garantia</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fase 2 — serviços -->
+          <div class="hero-cine__stage hero-cine__stage--services" data-stage="services">
+            <span class="eyebrow eyebrow--dark hero-cine__stage-eyebrow">O que fazemos</span>
+            <h2 class="hero-cine__stage-title">Serviços prestados</h2>
+            <ul class="hero-cine__services">
+              <li class="hero-cine__service"><span class="hero-cine__service-num">01</span> Kit de luz ambiente interior</li>
+              <li class="hero-cine__service"><span class="hero-cine__service-num">02</span> Iluminação exterior &amp; underglow</li>
+              <li class="hero-cine__service"><span class="hero-cine__service-num">03</span> Puddle lights personalizadas</li>
+              <li class="hero-cine__service"><span class="hero-cine__service-num">04</span> Céu estrelado (starlight)</li>
+              <li class="hero-cine__service"><span class="hero-cine__service-num">05</span> Alterações estéticas &amp; detailing</li>
+              <li class="hero-cine__service"><span class="hero-cine__service-num">06</span> Instalação profissional c/ garantia</li>
+            </ul>
+          </div>
+
+          <!-- Fase 3 — marcas dos dois lados -->
+          <div class="hero-cine__stage hero-cine__stage--brands" data-stage="brands">
+            <span class="eyebrow eyebrow--dark hero-cine__stage-eyebrow">Todas as marcas</span>
+            <h2 class="hero-cine__stage-title">Trabalhamos com</h2>
+            <div class="hero-cine__brands-show">
+              <div class="hero-cine__marquee" aria-hidden="false">
+                <div class="hero-cine__marquee-track hero-cine__marquee-track--a">
+                  <img class="hero-cine__brand" src="/images/brands/bmw.png" alt="BMW" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/mercedes.png" alt="Mercedes-Benz" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/audi.png" alt="Audi" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/porsche.png" alt="Porsche" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/volkswagen.png" alt="Volkswagen" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/land-rover.png" alt="Land Rover" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/volvo.png" alt="Volvo" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/alfa-romeo.png" alt="Alfa Romeo" width="150" height="150" loading="lazy" />
+                </div>
+              </div>
+              <div class="hero-cine__marquee hero-cine__marquee--reverse">
+                <div class="hero-cine__marquee-track hero-cine__marquee-track--b">
+                  <img class="hero-cine__brand" src="/images/brands/tesla.png" alt="Tesla" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/renault.png" alt="Renault" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/peugeot.png" alt="Peugeot" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/citroen.png" alt="Citroën" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/ford.png" alt="Ford" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/seat.png" alt="SEAT" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/infiniti.png" alt="Infiniti" width="150" height="150" loading="lazy" />
+                  <img class="hero-cine__brand" src="/images/brands/citroen-alt.png" alt="Citroën" width="150" height="150" loading="lazy" />
+                </div>
+              </div>
+            </div>
+            <p class="hero-cine__brand-note">E outras marcas sob orçamento</p>
+            <div class="hero-actions hero-cine__actions">
+              <a href="catalogo.html" class="btn btn--primary magnetic" data-magnetic data-cursor="cta">
+                <span>Ver Catálogo</span><span class="btn__shine"></span>
+              </a>
+              <a href="#contacto" class="btn btn--ghost magnetic" data-magnetic>Orçamento Grátis</a>
+            </div>
+          </div>
+
+          <div class="scroll-indicator" id="scroll-indicator">
+            <div class="scroll-indicator__wheel"></div>
+            <span>Explorar</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ VISTAS — estilo configurador (friso + filmstrip) ═══ -->
+      <section class="vehicle-viewer chapter--workshop" id="chapter-workshop" data-chapter="workshop" tabindex="0">
+        <div class="vehicle-viewer__inner">
+          <div class="vehicle-viewer__studio">
+            <div class="vehicle-viewer__toolbar">
+              <nav class="view-strip" aria-label="Categorias da viatura">
+                <span class="view-strip__counter" aria-live="polite">1 / 5</span>
+                <div class="view-strip__divider" aria-hidden="true"></div>
+                <div class="view-strip__tabs" role="tablist">
+                  <button type="button" class="view-strip__tab is-active" role="tab" data-tab="frente" aria-selected="true">Frente</button>
+                  <button type="button" class="view-strip__tab" role="tab" data-tab="traseira" aria-selected="false">Traseira</button>
+                  <button type="button" class="view-strip__tab" role="tab" data-tab="interior" aria-selected="false">Interior</button>
+                </div>
+              </nav>
+            </div>
+
+            <div class="vehicle-viewer__hero">
+              <div class="vehicle-viewer__brand" aria-hidden="true">
+                <img src="/images/logo.jpg" alt="" width="360" height="360" decoding="async" />
+              </div>
+              <img
+                class="vehicle-viewer__img"
+                src="/images/showcase/frente.webp"
+                srcset="/images/showcase/frente.webp 1920w, /images/showcase/frente@2x.webp 3840w"
+                sizes="100vw"
+                alt="Underglow LED roxo — BMW M4 vista frontal"
+                width="3840"
+                height="2469"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+              <div class="vehicle-viewer__thumbs" role="list" aria-label="Todas as vistas"></div>
+              <button type="button" class="vehicle-viewer__nav-btn vehicle-viewer__nav-btn--prev" aria-label="Vista anterior">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button type="button" class="vehicle-viewer__nav-btn vehicle-viewer__nav-btn--next" aria-label="Vista seguinte">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- stats integradas no hero scroll -->
+
+      <!-- ═══ CATÁLOGO — destaque + preview ═══ -->
+      <section class="catalog-hub" id="catalogo">
+        <header class="projects-hub__header">
+          <span class="eyebrow eyebrow--gold">Catálogo</span>
+          <h2 class="section-title section-title--inline split-heading">Trabalhos <span class="section-title__accent">realizados</span></h2>
+        </header>
+
+        <article class="project-showcase" aria-label="VW Golf MK7 GTI">
+          <div class="project-showcase__layout">
+            <div class="project-showcase__intro">
+              <span class="eyebrow eyebrow--gold">VW Golf MK7 GTI</span>
+              <h3 class="section-title section-title--sm split-heading">
+                Kit ambiente<br /><span class="section-title__accent">completo</span>
+              </h3>
+              <ul class="project-showcase__list">
+                <li>Instalação de kit de luz ambiente</li>
+                <li>Luz no friso de tablier</li>
+                <li>Luz no friso de portas</li>
+                <li>Luz nos puxadores</li>
+                <li>Luz na zona dos pés</li>
+                <li>Luz nas pegas das 4 portas</li>
+                <li>Luz na gaveta da consola central</li>
+              </ul>
+              <p class="project-showcase__thanks">Obrigado pela preferência!</p>
+              <div class="project-showcase__actions">
+                <a href="https://wa.me/351900000000?text=Olá!%20Vi%20o%20trabalho%20no%20VW%20Golf%20MK7%20GTI%20e%20gostava%20de%20mais%20informações." class="btn btn--primary magnetic" data-magnetic data-cursor="cta" target="_blank" rel="noopener noreferrer">
+                  <span>Mais informações</span><span class="btn__shine"></span>
+                </a>
+                <a href="#contacto" class="btn btn--ghost magnetic" data-magnetic>Orçamento</a>
+              </div>
+              <div class="project-showcase__progress" aria-hidden="true">
+                <div class="project-showcase__progress-fill"></div>
+              </div>
+              <p class="project-showcase__hint" aria-hidden="true">← deslize para ver as fotos →</p>
+            </div>
+
+            <div class="project-showcase__gallery-wrap">
+              <div class="project-showcase__track">
+                <figure class="project-photo is-active">
+                  <img src="/images/projects/golf-mk7-gti/01.png" alt="VW Golf MK7 GTI — kit ambiente completo em vermelho" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/02.png" alt="VW Golf MK7 GTI — vista geral do habitáculo" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/03.png" alt="VW Golf MK7 GTI — porta com luz nos puxadores" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/04.png" alt="VW Golf MK7 GTI — bancos GTI com luz ambiente" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/05.png" alt="VW Golf MK7 GTI — consola central e zona dos pés" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/06.png" alt="VW Golf MK7 GTI — ambiente roxo no tablier" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/07.png" alt="VW Golf MK7 GTI — interior completo iluminado" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/08.png" alt="VW Golf MK7 GTI — friso de portas iluminado" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/09.png" alt="VW Golf MK7 GTI — luz ambiente no interior" width="1080" height="1080" loading="lazy" />
+                </figure>
+                <figure class="project-photo">
+                  <img src="/images/projects/golf-mk7-gti/10.png" alt="VW Golf MK7 GTI — gaveta da consola central" width="1080" height="1080" loading="lazy" />
+                </figure>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div class="catalog-preview">
+          <h3 class="section-title section-title--sm split-heading catalog-preview__title">
+            Ver catálogo<br /><span class="section-title__accent">completo</span>
+          </h3>
+          <div class="catalog-preview__carousel" aria-label="Destaques do catálogo">
+            <div class="catalog-preview__viewport">
+              <div class="catalog-preview__track">
+            <a href="catalogo.html#golf-mk7-gti" class="catalog-card magnetic" data-magnetic>
+              <img src="/images/projects/golf-mk7-gti/01.png" alt="" width="400" height="400" loading="lazy" />
+              <span class="catalog-card__name">VW Golf MK7 GTI</span>
+            </a>
+            <a href="catalogo.html#land-rover-velar" class="catalog-card magnetic" data-magnetic>
+              <img src="/images/projects/land-rover-velar/01.png" alt="" width="400" height="400" loading="lazy" />
+              <span class="catalog-card__name">Land Rover Velar</span>
+            </a>
+            <a href="catalogo.html#tesla-model-3" class="catalog-card magnetic" data-magnetic>
+              <img src="/images/projects/tesla-model-3/01.png" alt="" width="400" height="400" loading="lazy" />
+              <span class="catalog-card__name">Tesla Model 3</span>
+            </a>
+            <a href="catalogo.html#audi-a3-8v" class="catalog-card magnetic" data-magnetic>
+              <img src="/images/projects/audi-a3-8v/01.png" alt="" width="400" height="400" loading="lazy" />
+              <span class="catalog-card__name">Audi A3 8V</span>
+            </a>
+            <a href="catalogo.html#bmw-1-f20" class="catalog-card magnetic" data-magnetic>
+              <img src="/images/projects/bmw-1-f20/01.png" alt="" width="400" height="400" loading="lazy" />
+              <span class="catalog-card__name">BMW Série 1 F20</span>
+            </a>
+            <a href="catalogo.html#audi-q4-etron" class="catalog-card magnetic" data-magnetic>
+              <img src="/images/projects/audi-q4-etron/01.png" alt="" width="400" height="400" loading="lazy" />
+              <span class="catalog-card__name">Audi Q4 e-tron</span>
+            </a>
+            </div>
+            </div>
+          </div>
+          <a href="catalogo.html" class="btn btn--primary magnetic catalog-preview__cta" data-magnetic data-cursor="cta">
+            <span>Abrir catálogo completo</span><span class="btn__shine"></span>
+          </a>
+        </div>
+      </section>
+      <!-- Marquee -->
+      <section class="marquee-section" aria-hidden="true">
+        <div class="marquee">
+          <div class="marquee__inner">
+            <span>Amarante · Porto</span><span class="marquee__dot">◆</span>
+            <span>Iluminação Interior & Exterior</span><span class="marquee__dot">◆</span>
+            <span>Alterações Estéticas</span><span class="marquee__dot">◆</span>
+            <span>Instalação Profissional</span><span class="marquee__dot">◆</span>
+            <span>Garantia 2 Anos</span><span class="marquee__dot">◆</span>
+            <span>Orçamento Grátis</span><span class="marquee__dot">◆</span>
+            <span>Marcas Premium</span><span class="marquee__dot">◆</span>
+            <span>Amarante · Porto</span><span class="marquee__dot">◆</span>
+            <span>Iluminação Interior & Exterior</span><span class="marquee__dot">◆</span>
+            <span>Alterações Estéticas</span><span class="marquee__dot">◆</span>
+            <span>Instalação Profissional</span><span class="marquee__dot">◆</span>
+            <span>Garantia 2 Anos</span><span class="marquee__dot">◆</span>
+            <span>Orçamento Grátis</span><span class="marquee__dot">◆</span>
+            <span>Marcas Premium</span><span class="marquee__dot">◆</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ CONTACT ═══ -->
+      <section class="contact" id="contacto">
+        <div class="contact__aurora" aria-hidden="true"></div>
+        <div class="contact__inner">
+          <div class="contact__info">
+            <span class="eyebrow eyebrow--gold">Contacto</span>
+            <h2 class="section-title split-heading">Vamos iluminar<br />a sua viatura</h2>
+            <p class="section-sub">Em Amarante, Porto — orçamento personalizado em 24h.</p>
+            <div class="contact__details">
+              <div class="contact__detail">
+                <span class="contact__label">Localização</span><span>Amarante, Porto</span>
+              </div>
+              <a href="tel:+351900000000" class="contact__detail magnetic" data-magnetic>
+                <span class="contact__label">Telefone</span><span>+351 900 000 000</span>
+              </a>
+              <a href="mailto:info@ledscargarage.pt" class="contact__detail magnetic" data-magnetic>
+                <span class="contact__label">Email</span><span>info@ledscargarage.pt</span>
+              </a>
+            </div>
+            <div class="contact__social" aria-label="Redes sociais">
+              <a href="https://www.instagram.com/ledscargarage" class="contact__social-btn contact__social-btn--instagram magnetic" data-magnetic target="_blank" rel="noopener noreferrer">
+                <span class="contact__social-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </span>
+                <span class="contact__social-text">
+                  <span class="contact__social-name">Instagram</span>
+                  <span class="contact__social-handle">@ledscargarage</span>
+                </span>
+              </a>
+              <a href="https://www.facebook.com/ledscargarage" class="contact__social-btn contact__social-btn--facebook magnetic" data-magnetic target="_blank" rel="noopener noreferrer">
+                <span class="contact__social-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path>
+                  </svg>
+                </span>
+                <span class="contact__social-text">
+                  <span class="contact__social-name">Facebook</span>
+                  <span class="contact__social-handle">LEDSCAR.GARAGE</span>
+                </span>
+              </a>
+              <a href="https://wa.me/351900000000?text=Olá!%20Gostava%20de%20um%20orçamento." class="contact__social-btn contact__social-btn--whatsapp magnetic" data-magnetic target="_blank" rel="noopener noreferrer">
+                <span class="contact__social-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path>
+                  </svg>
+                </span>
+                <span class="contact__social-text">
+                  <span class="contact__social-name">WhatsApp</span>
+                  <span class="contact__social-handle">Mensagem direta</span>
+                </span>
+              </a>
+            </div>
+          </div>
+          <form class="contact__form liquid-glass" id="contact-form">
+            <div class="form-row"><label for="name">Nome</label><input type="text" id="name" required placeholder="O seu nome" /></div>
+            <div class="form-row"><label for="email">Email</label><input type="email" id="email" required placeholder="email@exemplo.pt" /></div>
+            <div class="form-row"><label for="car">Viatura</label><input type="text" id="car" required placeholder="Tesla Model 3 2024" /></div>
+            <div class="form-row">
+              <label for="service">Serviço</label>
+              <select id="service">
+                <option value="">Selecione</option>
+                <option>Iluminação Interior</option>
+                <option>Iluminação Exterior</option>
+                <option>Alterações Estéticas</option>
+                <option>Puddle Lights</option>
+                <option>Footwell</option>
+                <option>Starlight</option>
+                <option>Underglow</option>
+                <option>Pack Completo</option>
+              </select>
+            </div>
+            <div class="form-row"><label for="message">Mensagem</label><textarea id="message" rows="3" placeholder="O que pretende..."></textarea></div>
+            <button type="submit" class="btn btn--primary magnetic" data-magnetic data-cursor="cta">
+              <span>Enviar Pedido</span><span class="btn__shine"></span>
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <img src="/images/logo.jpg" alt="LEDSCAR.GARAGE" width="56" height="56" />
+      <p class="footer__location">Amarante · Porto</p>
+      <p>© 2026 LEDSCAR.GARAGE</p>
+      <div class="footer__stars">★ ★ ★</div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

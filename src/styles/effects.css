@@ -1,0 +1,71 @@
+#main { position: relative; z-index: 2; }
+
+body.is-loading #main { opacity: 0; }
+#main.is-visible { opacity: 1; transition: opacity 0.5s ease; }
+body.is-ready #main.is-visible { animation: none; }
+
+.nav__cta {
+  box-shadow: 0 2px 12px var(--gold-glow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.nav__cta:hover { box-shadow: 0 4px 20px var(--gold-glow); transform: translateY(-2px); }
+
+.eyebrow--gold { box-shadow: none; }
+.eyebrow--magenta { box-shadow: none; }
+
+.h-card__visual span {
+  filter: drop-shadow(0 0 20px var(--gold-glow));
+  animation: icon-float 5s ease-in-out infinite;
+}
+@keyframes icon-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.section-wipe { height: 1px; box-shadow: none; }
+.section-wipe--blue { background: linear-gradient(90deg, var(--bronze-bright), transparent); }
+.section-wipe--magenta { background: linear-gradient(90deg, var(--bronze-bright), transparent); }
+
+.logo-reveal__img {
+  animation: logo-pulse 4s ease-in-out infinite;
+}
+@keyframes logo-pulse {
+  0%, 100% { filter: drop-shadow(0 0 40px var(--gold-glow)); }
+  50% { filter: drop-shadow(0 0 60px var(--gold-glow)) brightness(1.05); }
+}
+
+.marquee__inner span { color: var(--fg-muted); }
+.marquee__inner span:not(.marquee__dot) {
+  background: linear-gradient(90deg, var(--fg-muted), oklch(81% 0.14 74 / 0.85));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.marquee__dot { text-shadow: 0 0 6px var(--gold-glow); }
+
+.contact__detail span:last-child {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+  border-color: oklch(81% 0.14 74 / 0.4);
+  box-shadow: 0 0 0 3px oklch(81% 0.14 74 / 0.08), 0 0 16px var(--gold-glow);
+}
+
+.footer {
+  position: relative; z-index: 2;
+  background: linear-gradient(to top, var(--bg), var(--bg-elevated));
+}
+
+.chapter-index { text-shadow: 0 0 80px oklch(100% 0 0 / 0.04); }
+
+.scroll-indicator { color: var(--bronze-bright); }
+
+.light-beam--blue { width: 2px; box-shadow: 0 0 40px var(--gold-glow), 0 0 80px var(--gold-glow); }
+.light-beam--gold { width: 2px; box-shadow: 0 0 40px var(--gold-glow), 0 0 80px var(--gold-glow); }
+
+.hero-orb--1 { background: oklch(81% 0.14 74 / 0.12); }
+.hero-orb--2 { background: oklch(81% 0.14 74 / 0.1); }
+.hero-orb--3 { background: oklch(81% 0.14 74 / 0.08); }
