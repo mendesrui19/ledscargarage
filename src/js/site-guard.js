@@ -7,6 +7,7 @@ const DEFAULT_HOSTS = [
   '127.0.0.1',
   'ledscargarage.pt',
   'www.ledscargarage.pt',
+  'ledscargarage.vercel.app',
 ];
 
 function parseAllowedHosts() {
@@ -19,6 +20,7 @@ function isAllowedHost(hostname) {
   const allowed = parseAllowedHosts();
   if (allowed.includes(hostname)) return true;
   if (hostname.endsWith('.localhost')) return true;
+  if (hostname.endsWith('.vercel.app')) return true;
   if (import.meta.env.DEV) return true;
   return false;
 }
