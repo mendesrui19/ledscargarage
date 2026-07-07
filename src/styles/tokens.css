@@ -1293,11 +1293,17 @@ body.is-menu-open { overflow: hidden; }
     padding-block: clamp(2rem, 5vh, 3.5rem);
   }
   .project-showcase__layout {
-    min-height: auto;
-    align-content: start;
+    min-height: calc(100svh - var(--nav-h));
+    min-height: calc(100dvh - var(--nav-h));
+    align-items: center;
+    align-content: center;
+    box-sizing: border-box;
+  }
+  .project-showcase__intro,
+  .project-showcase__gallery-wrap {
+    align-self: center;
   }
   .project-showcase__gallery-wrap {
-    align-self: start;
     display: flex;
     align-items: flex-start;
   }
@@ -1308,7 +1314,6 @@ body.is-menu-open { overflow: hidden; }
 .project-showcase__intro {
   position: relative;
   top: auto;
-  align-self: start;
 }
 .project-showcase__list {
   margin: 1.25rem 0 1.5rem;
@@ -1651,13 +1656,7 @@ body.is-menu-open { overflow: hidden; }
   min-height: auto;
 }
 .catalog-hub > .project-showcase .project-showcase__layout {
-  min-height: auto;
-  align-items: start;
   gap: clamp(1.25rem, 3vw, 2.5rem);
-}
-.catalog-hub > .project-showcase .project-showcase__intro,
-.catalog-hub > .project-showcase .project-showcase__gallery-wrap {
-  align-self: start;
 }
 .catalog-preview {
   padding: clamp(2rem, 5vh, 3rem) 0 clamp(2rem, 4vh, 2.5rem);
@@ -1796,16 +1795,9 @@ body.is-menu-open { overflow: hidden; }
   min-height: auto;
   padding-block: clamp(2rem, 5vh, 3rem);
 }
-.catalog-page-projects .project-showcase__layout {
-  min-height: auto;
-}
 .catalog-page-projects .project-showcase__intro {
   position: static;
   top: auto;
-}
-.catalog-page-projects .project-showcase__intro,
-.catalog-page-projects .project-showcase__gallery-wrap {
-  align-self: start;
 }
 .nav__link--active { color: var(--bronze-bright); }
 

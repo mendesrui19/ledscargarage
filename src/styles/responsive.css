@@ -7,7 +7,6 @@
   .project-showcase__layout {
     grid-template-columns: minmax(240px, 320px) 1fr;
     gap: 1.5rem;
-    min-height: auto;
   }
 
   .brands-showcase__inner,
