@@ -17,7 +17,7 @@ function slideSources(base) {
 }
 
 function applySlideImage(img, slide) {
-  const { src, srcset } = slideSources(slide.base);
+  const { src, srcset } = slide.src ? slide : slideSources(slide.base);
   img.src = src;
   img.srcset = srcset;
   img.sizes = '100vw';
@@ -26,10 +26,17 @@ function applySlideImage(img, slide) {
 
 function preloadShowcaseImages() {
   SLIDES.forEach((slide) => {
-    ['.webp', '@2x.webp'].forEach((suffix) => {
-      const preloader = new Image();
-      preloader.src = `${slide.base}${suffix}`;
-    });
+    if (slide.src) {
+      [slide.src, slide.srcset?.split(',')[1]?.trim().split(' ')[0]].filter(Boolean).forEach((src) => {
+        const preloader = new Image();
+        preloader.src = src;
+      });
+    } else {
+      ['.webp', '@2x.webp'].forEach((suffix) => {
+        const preloader = new Image();
+        preloader.src = `${slide.base}${suffix}`;
+      });
+    }
   });
 }
 
@@ -47,6 +54,9 @@ export function initVehicleViewer(reducedMotion) {
   const thumbsWrap = section.querySelector('.vehicle-viewer__thumbs');
   const navPrev = section.querySelector('.vehicle-viewer__nav-btn--prev');
   const navNext = section.querySelector('.vehicle-viewer__nav-btn--next');
+  const hint = section.querySelector('.vehicle-viewer__hint');
+  const transitionVideo = section.querySelector('.vehicle-viewer__transition');
+  const frameLock = section.querySelector('.vehicle-viewer__frame-lock');
 
   if (!img || !tabs.length || !thumbsWrap) return;
 
@@ -57,13 +67,32 @@ export function initVehicleViewer(reducedMotion) {
     btn.setAttribute('role', 'listitem');
     btn.setAttribute('aria-label', slide.alt);
     btn.dataset.index = String(i);
-    btn.innerHTML = `<img src="${slideSources(slide.base).thumb}" alt="" width="64" height="40" loading="lazy" decoding="async" />`;
+    const thumb = slide.thumb || slideSources(slide.base).thumb;
+    btn.innerHTML = `<img src="${thumb}" alt="" width="64" height="40" loading="lazy" decoding="async" />`;
     thumbsWrap.appendChild(btn);
     return btn;
   });
 
-  let index = 0;
+  const initialIndex = Math.max(firstSlideForTab('traseira'), 0);
+  let index = initialIndex;
   let animating = false;
+  let userInteracted = false;
+  let demoPlayed = false;
+  let demoTimer = 0;
+  let bridgeTimer = 0;
+  let bridgeFadeTimer = 0;
+  let frameLockTimer = 0;
+  let toneTimer = 0;
+  let postBridgeTimerA = 0;
+  let postBridgeTimerB = 0;
+  const hasBridge = Boolean(transitionVideo && !reducedMotion);
+  let bridgeDone = !hasBridge;
+  const BRIDGE_TARGET_TIME = 6.0;
+  const BRIDGE_FADE_MS = 760;
+  const BRIDGE_HOLD_MS = 120;
+
+  if (hasBridge) section.classList.add('has-bridge');
+
 
   const scrollThumbIntoView = (i) => {
     thumbs[i]?.scrollIntoView({
@@ -88,7 +117,6 @@ export function initVehicleViewer(reducedMotion) {
     }
 
     img.classList.toggle('is-interior', slide.tab === 'interior');
-
     scrollThumbIntoView(index);
   };
 
@@ -129,27 +157,157 @@ export function initVehicleViewer(reducedMotion) {
     setImage((nextIndex + len) % len);
   };
 
+  const hideHint = () => {
+    section.classList.add('is-engaged');
+    if (hint) hint.setAttribute('aria-hidden', 'true');
+  };
+
+  const clearPostBridgeSequence = () => {
+    clearTimeout(postBridgeTimerA);
+    clearTimeout(postBridgeTimerB);
+  };
+
+  const markInteracted = () => {
+    if (userInteracted) return;
+    userInteracted = true;
+    hideHint();
+    clearTimeout(demoTimer);
+    clearPostBridgeSequence();
+  };
+
+  const runDemo = () => {
+    if (reducedMotion || demoPlayed || userInteracted || hasBridge) return;
+    demoPlayed = true;
+    section.classList.add('is-demo-running');
+    const sequence = [2, 0, 1];
+    let step = 0;
+
+    const nextStep = () => {
+      if (userInteracted || step >= sequence.length) {
+        section.classList.remove('is-demo-running');
+        return;
+      }
+      setImage(sequence[step]);
+      step += 1;
+      demoTimer = window.setTimeout(nextStep, 900);
+    };
+
+    demoTimer = window.setTimeout(nextStep, 420);
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    if (!entries[0]?.isIntersecting) return;
+    io.disconnect();
+    runDemo();
+  }, { threshold: 0.6 });
+  io.observe(section);
+
+  const finishBridge = () => {
+    if (bridgeDone) return;
+    bridgeDone = true;
+    clearTimeout(bridgeTimer);
+    clearTimeout(bridgeFadeTimer);
+    clearTimeout(frameLockTimer);
+    clearTimeout(toneTimer);
+    clearPostBridgeSequence();
+    section.classList.add('is-bridge-done');
+    section.classList.remove('is-bridge-fading');
+    section.classList.remove('is-frame-lock-active');
+    section.classList.remove('is-frame-lock-fading');
+    section.classList.remove('is-tone-match');
+    section.classList.remove('is-tone-settle');
+    section.classList.remove('has-bridge');
+    if (transitionVideo) {
+      transitionVideo.pause();
+      transitionVideo.currentTime = 0;
+    }
+
+    if (!userInteracted) {
+      const firstInterior = Math.max(firstSlideForTab('interior'), 0);
+      const firstExterior = Math.max(firstSlideForTab('frente'), 0);
+      postBridgeTimerA = window.setTimeout(() => setImage(firstInterior), 750);
+      postBridgeTimerB = window.setTimeout(() => setImage(firstExterior), 1900);
+    }
+  };
+
+  if (hasBridge) {
+    const beginFadeFromMatchedFrame = () => {
+      if (bridgeDone || section.classList.contains('is-bridge-fading')) return;
+      transitionVideo.pause();
+      applySlideImage(img, SLIDES[initialIndex]);
+      section.classList.add('is-tone-match');
+      section.classList.remove('is-tone-settle');
+      if (frameLock) {
+        section.classList.add('is-frame-lock-active');
+        section.classList.remove('is-frame-lock-fading');
+      }
+      bridgeFadeTimer = window.setTimeout(() => {
+        section.classList.add('is-bridge-fading');
+        if (frameLock) section.classList.add('is-frame-lock-fading');
+        toneTimer = window.setTimeout(() => {
+          section.classList.add('is-tone-settle');
+          section.classList.remove('is-tone-match');
+        }, 140);
+      }, BRIDGE_HOLD_MS);
+      frameLockTimer = window.setTimeout(finishBridge, BRIDGE_HOLD_MS + BRIDGE_FADE_MS + 40);
+    };
+
+    transitionVideo.addEventListener('timeupdate', () => {
+      if (bridgeDone) return;
+      if (transitionVideo.currentTime >= BRIDGE_TARGET_TIME) {
+        beginFadeFromMatchedFrame();
+      }
+    });
+    transitionVideo.addEventListener('ended', beginFadeFromMatchedFrame, { once: true });
+
+    const bridgeObserver = new IntersectionObserver((entries) => {
+      if (!entries[0]?.isIntersecting || bridgeDone) return;
+      bridgeObserver.disconnect();
+      transitionVideo.currentTime = 0;
+      const playPromise = transitionVideo.play();
+      if (playPromise?.catch) {
+        playPromise.catch(() => finishBridge());
+      }
+      bridgeTimer = window.setTimeout(beginFadeFromMatchedFrame, 6800);
+    }, { threshold: 0.62 });
+
+    bridgeObserver.observe(section);
+  }
+
   thumbs.forEach((btn, i) => {
-    btn.addEventListener('click', () => setImage(i));
+    btn.addEventListener('click', () => {
+      markInteracted();
+      setImage(i);
+    });
   });
 
   tabs.forEach((btn) => {
     btn.addEventListener('click', () => {
+      markInteracted();
       const target = firstSlideForTab(btn.dataset.tab);
       if (target >= 0) setImage(target);
     });
   });
 
-  navPrev?.addEventListener('click', () => go(index - 1));
-  navNext?.addEventListener('click', () => go(index + 1));
+  navPrev?.addEventListener('click', () => {
+    markInteracted();
+    go(index - 1);
+  });
+  navNext?.addEventListener('click', () => {
+    markInteracted();
+    go(index + 1);
+  });
 
   section.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); markInteracted(); go(index - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); markInteracted(); go(index + 1); }
   });
 
   let touchX = 0;
-  section.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+  section.addEventListener('touchstart', (e) => {
+    markInteracted();
+    touchX = e.changedTouches[0].clientX;
+  }, { passive: true });
   section.addEventListener('touchend', (e) => {
     const dx = e.changedTouches[0].clientX - touchX;
     if (Math.abs(dx) < 32) return;
@@ -158,6 +316,6 @@ export function initVehicleViewer(reducedMotion) {
   }, { passive: true });
 
   preloadShowcaseImages();
-  applySlideImage(img, SLIDES[0]);
+  applySlideImage(img, SLIDES[index]);
   updateUI();
 }

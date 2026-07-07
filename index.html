@@ -207,6 +207,29 @@
               <div class="vehicle-viewer__brand" aria-hidden="true">
                 <img src="/images/logo.jpg" alt="" width="360" height="360" decoding="async" />
               </div>
+              <video
+                class="vehicle-viewer__transition"
+                src="/videos/workshop-transition.mp4"
+                poster="/images/poster-workshop-transition.jpg"
+                playsinline
+                muted
+                preload="metadata"
+                aria-hidden="true"
+              ></video>
+              <img
+                class="vehicle-viewer__frame-lock"
+                src="/images/showcase/traseira-bridge.jpg"
+                srcset="/images/showcase/traseira-bridge.jpg 1920w, /images/showcase/traseira-bridge@2x.jpg 3840w"
+                sizes="100vw"
+                alt=""
+                loading="eager"
+                decoding="async"
+                aria-hidden="true"
+              />
+              <div class="vehicle-viewer__hint" role="status" aria-live="polite">
+                <span class="vehicle-viewer__hint-icon" aria-hidden="true">↔</span>
+                <span>Desliza para explorar as vistas</span>
+              </div>
               <img
                 class="vehicle-viewer__img"
                 src="/images/showcase/frente.webp"
@@ -226,6 +249,7 @@
               <button type="button" class="vehicle-viewer__nav-btn vehicle-viewer__nav-btn--next" aria-label="Vista seguinte">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
+              <a class="vehicle-viewer__cta btn btn--primary" href="#contacto">Quero este setup no meu carro</a>
             </div>
           </div>
         </div>

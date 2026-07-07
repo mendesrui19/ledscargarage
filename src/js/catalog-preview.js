@@ -5,6 +5,83 @@ gsap.registerPlugin(ScrollTrigger);
 
 const PX_PER_SEC = 72;
 
+function setupAutoSwipeLoop(viewport, reducedMotion) {
+  if (!viewport || reducedMotion) return () => {};
+
+  let rafId = 0;
+  let lastTs = 0;
+  let resumeTimer = 0;
+  let paused = false;
+  let interacting = false;
+
+  const speedPxPerSec = 28;
+
+  const pauseTemporarily = (ms = 1800) => {
+    paused = true;
+    clearTimeout(resumeTimer);
+    resumeTimer = window.setTimeout(() => {
+      if (!interacting) paused = false;
+    }, ms);
+  };
+
+  const tick = (ts) => {
+    if (!lastTs) lastTs = ts;
+    const dt = (ts - lastTs) / 1000;
+    lastTs = ts;
+
+    if (!paused && !interacting) {
+      const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      if (maxScroll > 0) {
+        const next = viewport.scrollLeft + speedPxPerSec * dt;
+        viewport.scrollLeft = next >= maxScroll - 1 ? 0 : next;
+      }
+    }
+
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const onPointerDown = () => {
+    interacting = true;
+    paused = true;
+    clearTimeout(resumeTimer);
+  };
+
+  const onPointerUp = () => {
+    interacting = false;
+    pauseTemporarily(1400);
+  };
+
+  const onWheel = () => pauseTemporarily(1200);
+  const onScroll = () => pauseTemporarily(900);
+  const onVisibility = () => {
+    paused = document.hidden || interacting;
+  };
+
+  viewport.addEventListener('pointerdown', onPointerDown, { passive: true });
+  viewport.addEventListener('pointerup', onPointerUp, { passive: true });
+  viewport.addEventListener('pointercancel', onPointerUp, { passive: true });
+  viewport.addEventListener('touchstart', onPointerDown, { passive: true });
+  viewport.addEventListener('touchend', onPointerUp, { passive: true });
+  viewport.addEventListener('wheel', onWheel, { passive: true });
+  viewport.addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('visibilitychange', onVisibility, { passive: true });
+
+  rafId = requestAnimationFrame(tick);
+
+  return () => {
+    cancelAnimationFrame(rafId);
+    clearTimeout(resumeTimer);
+    viewport.removeEventListener('pointerdown', onPointerDown);
+    viewport.removeEventListener('pointerup', onPointerUp);
+    viewport.removeEventListener('pointercancel', onPointerUp);
+    viewport.removeEventListener('touchstart', onPointerDown);
+    viewport.removeEventListener('touchend', onPointerUp);
+    viewport.removeEventListener('wheel', onWheel);
+    viewport.removeEventListener('scroll', onScroll);
+    document.removeEventListener('visibilitychange', onVisibility);
+  };
+}
+
 function setupSwipe(viewport, track) {
   viewport.classList.add('catalog-preview__viewport--swipe');
   track.classList.remove('is-animated');
@@ -87,8 +164,12 @@ export function initCatalogPreview(reducedMotion) {
   ScrollTrigger.matchMedia({
     '(max-width: 767px)': () => {
       const cleanup = setupSwipe(viewport, track);
+      const cleanupAutoLoop = setupAutoSwipeLoop(viewport, reducedMotion);
       bindReveal();
-      return cleanup;
+      return () => {
+        cleanupAutoLoop();
+        cleanup();
+      };
     },
 
     '(min-width: 768px)': () => {
