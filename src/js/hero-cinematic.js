@@ -128,6 +128,17 @@ export async function initHeroCinematic(reducedMotion) {
 
       const triggers = [];
 
+      /* Hide fixed video bg once hero scrolls out of view */
+      const media = hero.querySelector('.hero-cine__media');
+      const mediaSt = ScrollTrigger.create({
+        trigger: hero,
+        start: 'top top',
+        end: 'bottom top',
+        onLeave: () => { if (media) media.style.display = 'none'; },
+        onEnterBack: () => { if (media) media.style.display = ''; },
+      });
+      triggers.push(mediaSt);
+
       const servicesSt = ScrollTrigger.create({
         trigger: services,
         start: 'top 85%',
