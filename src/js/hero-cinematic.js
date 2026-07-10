@@ -106,9 +106,9 @@ export async function initHeroCinematic(reducedMotion) {
       gsap.set(scrollInd, { opacity: 0 });
       gsap.set(intro, { opacity: 0, y: 24 });
       gsap.set(introStats, { opacity: 0, y: 12 });
-      gsap.set(services, { opacity: 0, visibility: 'hidden' });
-      gsap.set(brands, { opacity: 0, visibility: 'hidden' });
-      gsap.set(serviceItems, { opacity: 0, x: 0 });
+      gsap.set(services, { opacity: 0, y: 30 });
+      gsap.set(brands, { opacity: 0, y: 30 });
+      gsap.set(serviceItems, { opacity: 0 });
       if (brandsShow) gsap.set(brandsShow, { opacity: 0 });
       marqueeTracks.forEach((t) => t.classList.remove('is-animated'));
 
@@ -126,10 +126,36 @@ export async function initHeroCinematic(reducedMotion) {
         gsap.to(scrollInd, { opacity: 0, delay: 2.8, duration: 0.45, ease: 'power2.in' });
       }
 
+      const triggers = [];
+
+      const servicesSt = ScrollTrigger.create({
+        trigger: services,
+        start: 'top 85%',
+        onEnter: () => {
+          gsap.to(services, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+          gsap.to(serviceItems, { opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power2.out' });
+        },
+        once: true
+      });
+      triggers.push(servicesSt);
+
+      const brandsSt = ScrollTrigger.create({
+        trigger: brands,
+        start: 'top 85%',
+        onEnter: () => {
+          gsap.to(brands, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+          if (brandsShow) gsap.to(brandsShow, { opacity: 1, duration: 0.6, ease: 'power2.out' });
+          marqueeTracks.forEach((t) => t.classList.add('is-animated'));
+        },
+        once: true
+      });
+      triggers.push(brandsSt);
+
       return () => {
         hero.classList.remove('hero-cine--mobile');
         setScrollHint(false);
-        gsap.set([services, brands], { clearProps: 'visibility,opacity' });
+        triggers.forEach((t) => t.kill());
+        gsap.set([services, brands, serviceItems], { clearProps: 'all' });
       };
     },
 

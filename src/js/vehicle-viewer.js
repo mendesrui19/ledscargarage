@@ -294,6 +294,7 @@ export function initVehicleViewer(reducedMotion) {
 
   thumbs.forEach((btn, i) => {
     btn.addEventListener('click', () => {
+      if (!bridgeDone) return;
       markInteracted();
       setImage(i);
     });
@@ -301,6 +302,7 @@ export function initVehicleViewer(reducedMotion) {
 
   tabs.forEach((btn) => {
     btn.addEventListener('click', () => {
+      if (!bridgeDone) return;
       markInteracted();
       const target = firstSlideForTab(btn.dataset.tab);
       if (target >= 0) setImage(target);
@@ -308,25 +310,30 @@ export function initVehicleViewer(reducedMotion) {
   });
 
   navPrev?.addEventListener('click', () => {
+    if (!bridgeDone) return;
     markInteracted();
     go(index - 1);
   });
   navNext?.addEventListener('click', () => {
+    if (!bridgeDone) return;
     markInteracted();
     go(index + 1);
   });
 
   section.addEventListener('keydown', (e) => {
+    if (!bridgeDone) return;
     if (e.key === 'ArrowLeft') { e.preventDefault(); markInteracted(); go(index - 1); }
     if (e.key === 'ArrowRight') { e.preventDefault(); markInteracted(); go(index + 1); }
   });
 
   let touchX = 0;
   section.addEventListener('touchstart', (e) => {
+    if (!bridgeDone) return;
     markInteracted();
     touchX = e.changedTouches[0].clientX;
   }, { passive: true });
   section.addEventListener('touchend', (e) => {
+    if (!bridgeDone) return;
     const dx = e.changedTouches[0].clientX - touchX;
     if (Math.abs(dx) < 32) return;
     if (dx < 0) go(index + 1);

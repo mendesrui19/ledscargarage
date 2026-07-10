@@ -16,6 +16,8 @@ function setupAutoSwipeLoop(viewport, reducedMotion) {
 
   const speedPxPerSec = 28;
 
+  let isProgrammaticScroll = false;
+
   const pauseTemporarily = (ms = 1800) => {
     paused = true;
     clearTimeout(resumeTimer);
@@ -33,6 +35,7 @@ function setupAutoSwipeLoop(viewport, reducedMotion) {
       const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
       if (maxScroll > 0) {
         const next = viewport.scrollLeft + speedPxPerSec * dt;
+        isProgrammaticScroll = true;
         viewport.scrollLeft = next >= maxScroll - 1 ? 0 : next;
       }
     }
@@ -52,7 +55,13 @@ function setupAutoSwipeLoop(viewport, reducedMotion) {
   };
 
   const onWheel = () => pauseTemporarily(1200);
-  const onScroll = () => pauseTemporarily(900);
+  const onScroll = () => {
+    if (isProgrammaticScroll) {
+      isProgrammaticScroll = false;
+      return;
+    }
+    pauseTemporarily(900);
+  };
   const onVisibility = () => {
     paused = document.hidden || interacting;
   };

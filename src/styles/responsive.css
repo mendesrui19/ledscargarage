@@ -125,15 +125,20 @@
   /* Hero cinematic */
   .hero-cine__pin { height: 100dvh; height: 100svh; }
   .hero-cine--mobile .hero-cine__pin {
-    height: 100dvh;
-    height: 100svh;
-    max-height: 100dvh;
-    max-height: 100svh;
+    height: auto;
+    max-height: none;
+    position: relative;
   }
   .hero-cine--mobile .hero-cine__stage--services,
   .hero-cine--mobile .hero-cine__stage--brands {
-    visibility: hidden !important;
-    pointer-events: none !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+  .hero-cine--mobile .hero-cine__stage {
+    position: relative;
+    inset: auto;
+    height: auto;
+    min-height: 100svh;
   }
   .hero-cine__stage {
     padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 0.75rem) var(--page-pad) max(4.5rem, env(safe-area-inset-bottom));
@@ -141,7 +146,7 @@
   }
   .hero-cine__stage--services,
   .hero-cine__stage--brands {
-    justify-content: flex-end;
+    justify-content: center;
     padding-bottom: max(5rem, calc(env(safe-area-inset-bottom) + 3.5rem));
   }
   .hero-cine__title {
@@ -241,14 +246,20 @@
     position: relative;
     z-index: 6;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
     padding:
       calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 0.15rem)
       max(0.65rem, env(safe-area-inset-left))
       0.3rem
       max(0.65rem, env(safe-area-inset-right));
     pointer-events: none;
+  }
+
+  .vehicle-viewer__label {
+    font-size: clamp(0.58rem, 3.6vw, 0.72rem);
+    margin-bottom: 0.15rem;
   }
 
   .view-strip {
@@ -311,20 +322,20 @@
     height: 100%;
     max-width: none;
     max-height: none;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center 54%;
   }
   .vehicle-viewer__transition {
-    object-fit: cover;
+    object-fit: contain;
     object-position: center 54%;
   }
   .vehicle-viewer__frame-lock {
-    object-fit: cover;
+    object-fit: contain;
     object-position: center 54%;
   }
 
   .vehicle-viewer__img.is-interior {
-    object-fit: cover;
+    object-fit: contain;
     object-position: center 48%;
   }
 
