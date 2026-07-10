@@ -124,55 +124,6 @@
 
   /* Hero cinematic */
   .hero-cine__pin { height: 100dvh; height: 100svh; }
-
-  /* ── Mobile hero: fixed video background + flowing stages ── */
-  .hero-cine--mobile {
-    position: relative;
-    z-index: 2;
-  }
-  .hero-cine--mobile .hero-cine__pin {
-    height: auto;
-    max-height: none;
-    position: relative;
-    overflow: visible;
-    background: transparent;
-    transform: none !important;
-  }
-  .hero-cine--mobile .hero-cine__media {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100dvh;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .hero-cine--mobile .hero-cine__video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .hero-cine--mobile .hero-cine__vignette,
-  .hero-cine--mobile .hero-cine__grain {
-    position: absolute;
-    inset: 0;
-  }
-  .hero-cine--mobile .hero-cine__stage--services,
-  .hero-cine--mobile .hero-cine__stage--brands {
-    visibility: visible !important;
-    pointer-events: auto !important;
-  }
-  .hero-cine--mobile .hero-cine__stage {
-    position: relative;
-    inset: auto;
-    z-index: 3;
-    height: auto;
-    min-height: 100dvh;
-    background: linear-gradient(180deg, oklch(0% 0 0 / 0.35) 0%, oklch(0% 0 0 / 0.55) 50%, oklch(0% 0 0 / 0.35) 100%);
-  }
-  .hero-cine--mobile .hero-cine__stage--intro {
-    background: linear-gradient(180deg, oklch(0% 0 0 / 0.15) 0%, oklch(0% 0 0 / 0.4) 70%, oklch(0% 0 0 / 0.6) 100%);
-  }
   .hero-cine__stage {
     padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 0.75rem) var(--page-pad) max(4.5rem, env(safe-area-inset-bottom));
     justify-content: center;
@@ -311,7 +262,9 @@
   .vehicle-viewer__hero {
     position: relative;
     width: 100%;
-    aspect-ratio: 1.55;
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     padding: 0;
     min-height: 0;
@@ -337,38 +290,31 @@
   }
 
   .vehicle-viewer__hero::after {
-    content: '';
+    display: none; /* Removed the dark gradient since image is not full screen anymore */
+  }
+
+  .vehicle-viewer__transition {
     position: absolute;
-    inset: auto 0 0;
-    height: 46%;
+    top: 0; left: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.55;
     z-index: 2;
-    pointer-events: none;
-    background: linear-gradient(to top, oklch(8% 0.02 265 / 0.94) 0%, oklch(8% 0.02 265 / 0.35) 42%, transparent 100%);
+    object-fit: cover;
+    object-position: center 54%;
   }
 
   .vehicle-viewer__img {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    inset: auto;
     z-index: 1;
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 1.55;
     max-width: none;
     max-height: none;
-    object-fit: cover;
-    object-position: center 54%;
-  }
-  .vehicle-viewer__transition {
-    object-fit: cover;
-    object-position: center 54%;
-  }
-  .vehicle-viewer__frame-lock {
-    object-fit: cover;
-    object-position: center 54%;
-  }
-
-  .vehicle-viewer__img.is-interior {
-    object-fit: cover;
-    object-position: center 48%;
+    object-fit: contain;
+    object-position: center;
   }
 
   .vehicle-viewer__brand {
