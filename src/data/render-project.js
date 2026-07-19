@@ -17,7 +17,7 @@ export function renderProjectArticle(project, { featured = false } = {}) {
             <div class="project-showcase__intro">
               <span class="eyebrow eyebrow--gold">${project.name}</span>
               <h3 class="section-title section-title--sm split-heading">
-                ${project.tag.split(' ').slice(0, 2).join(' ')}<br /><span class="section-title__accent">${project.tag.split(' ').slice(2).join(' ') || 'premium'}</span>
+                ${project.tag.split(' ').slice(0, 2).join(' ')}<br /><span class="section-title__accent">${project.tag.split(' ').slice(2).join(' ') || 'ambiente'}</span>
               </h3>
               <ul class="project-showcase__list">
 ${specs}

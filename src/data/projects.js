@@ -2,7 +2,7 @@ export const projects = [
   {
     id: 'golf-mk7-gti',
     name: 'VW Golf MK7 GTI',
-    tag: 'Kit ambiente completo',
+    tag: 'Kit luz ambiente',
     theme: '',
     image: '/images/projects/golf-mk7-gti/01.png',
     specs: [
@@ -32,7 +32,7 @@ export const projects = [
   {
     id: 'land-rover-velar',
     name: 'Land Rover Velar',
-    tag: 'Kit ambiente premium',
+    tag: 'Kit luz ambiente',
     theme: 'project-showcase--alt',
     image: '/images/projects/land-rover-velar/01.png',
     specs: [
@@ -60,7 +60,7 @@ export const projects = [
   {
     id: 'tesla-model-3',
     name: 'Tesla Model 3',
-    tag: 'Kit ambiente RGBW',
+    tag: 'Kit luz ambiente',
     theme: 'project-showcase--tesla',
     image: '/images/projects/tesla-model-3/01.png',
     specs: [
@@ -85,7 +85,7 @@ export const projects = [
   {
     id: 'audi-a3-8v',
     name: 'Audi A3 8V',
-    tag: 'Kit ambiente completo',
+    tag: 'Kit luz ambiente',
     theme: 'project-showcase--audi',
     image: '/images/projects/audi-a3-8v/01.png',
     specs: [
@@ -112,7 +112,7 @@ export const projects = [
   {
     id: 'bmw-1-f20',
     name: 'BMW Série 1 F20',
-    tag: 'Kit ambiente M Sport',
+    tag: 'Kit luz ambiente',
     theme: 'project-showcase--bmw',
     image: '/images/projects/bmw-1-f20/01.png',
     specs: [
@@ -136,7 +136,7 @@ export const projects = [
   {
     id: 'audi-q4-etron',
     name: 'Audi Q4 e-tron',
-    tag: 'Kit ambiente elétrico',
+    tag: 'Kit luz ambiente',
     theme: 'project-showcase--audi',
     image: '/images/projects/audi-q4-etron/01.png',
     specs: [
